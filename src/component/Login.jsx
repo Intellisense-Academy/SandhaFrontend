@@ -3,23 +3,25 @@ import { useState } from 'react';
 import { IoEyeSharp } from "react-icons/io5";
 import { FaEyeSlash } from "react-icons/fa";
 import { apiRequest } from '../common/common.js'
-import { Link } from "react-router-dom";
 
 const Login = () => {
     const [togglePassword, setTogglePassword] = useState(false)
-    const [data, setData] = useState({ email: '', password: '' })
+    const [data, setData] = useState({ mobileNumber: '', password: '' })
     const [inputErrors, setInputErrors] = useState({})
+
+    const handleBlur = () => {
+        handleErrors(); 
+    };
 
     const handleErrors = () => {
         const tempError = {}
 
-        if (!data.email.trim()) {
-            tempError.email = "Please enter an email";
+        if (data.mobileNumber.length === 0) {
+            tempError.mobileNumber = "Please enter an mobile Number";
         }
-        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
-            tempError.email = "Please enter a valid email address";
+        else if (data.mobileNumber.length < 10 || data.mobileNumber.length > 10) {
+            tempError.mobileNumber = "Please enter a 10 digit no";
         }
-
         if (!data.password.trim()) {
             tempError.password = "Please enter a password";
         }
@@ -55,13 +57,13 @@ const Login = () => {
 
             <form className="border p-5 rounded sm:w-3/5 md:w-2/5 lg:w-1/3 xl:w-1/4 mt-5 custom-input " onSubmit={handleSubmit}>
                 <label className="block mt-3">
-                    <span className="block text-sm font-medium text-slate-700">Email</span>
-                    <input type="email" className={`input-style border ${inputErrors.email ? 'border-red-500' : 'border-slate-300'}`} name="email" onChange={handleChange} value={data.email} />
-                    <p className="text-red-500 text-sm">{inputErrors.email ? inputErrors.email : ''}</p>
+                    <span className="block text-sm font-medium text-slate-700">Mobile No</span>
+                    <input type="number" className={`input-style border ${inputErrors.mobileNumber ? 'border-red-500' : 'border-slate-300'}`} name="mobileNumber" onChange={handleChange} onBlur={handleBlur()} value={data.mobileNumber} />
+                    <p className="text-red-500 text-sm">{inputErrors.mobileNumber ? inputErrors.mobileNumber : ''}</p>
                 </label>
                 <label className="block relative  mt-3">
                     <span className="block text-sm font-medium text-slate-700">Password</span>
-                    <input type={togglePassword ? "text" : "password"} className={`input-style border ${inputErrors.password ? 'border-red-500' : 'border-slate-300'}`} name="password" onChange={handleChange} value={data.password} />
+                    <input type={togglePassword ? "text" : "password"} className={`input-style border ${inputErrors.password ? 'border-red-500' : 'border-slate-300'}`} name="password" onChange={handleChange} onBlur={handleBlur()} value={data.password} />
                     <span className="absolute eyes-icons" onClick={() => setTogglePassword(!togglePassword)} > {togglePassword ? <IoEyeSharp /> : <FaEyeSlash />}</span>
                     <p className="text-red-500 text-sm">{inputErrors.password ? inputErrors.password : ''}</p>
                 </label>
@@ -70,12 +72,7 @@ const Login = () => {
                     className="w-1/2 md:w-1/4 mt-3 py-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-full ">
                     Login
                 </button>
-                <p className="mt-3 text-sm text-slate-700">
-                    Don't have an account?{" "}
-                    <Link to="/register" className="text-sky-600 hover:underline">
-                        Register
-                    </Link>
-                </p>
+
             </form>
         </div>
     )
