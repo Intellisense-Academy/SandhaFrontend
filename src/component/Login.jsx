@@ -9,17 +9,13 @@ const Login = () => {
     const [data, setData] = useState({ mobileNumber: '', password: '' })
     const [inputErrors, setInputErrors] = useState({})
 
-    const handleBlur = () => {
-        handleErrors();
-    };
-
     const handleErrors = () => {
         const tempError = {}
 
         if (data.mobileNumber.length === 0) {
             tempError.mobileNumber = "Please enter an mobile Number";
         }
-        else if (data.mobileNumber.length < 10 || data.mobileNumber.length > 10) {
+        else if (data.mobileNumber.length !== 10) {
             tempError.mobileNumber = "Please enter a 10 digit no";
         }
         if (!data.password.trim()) {
@@ -58,12 +54,12 @@ const Login = () => {
             <form className="border p-5 rounded sm:w-3/5 md:w-2/5 lg:w-1/3 xl:w-1/4 mt-5 custom-input " onSubmit={handleSubmit}>
                 <label className="block mt-3">
                     <span className="block text-sm font-medium text-slate-700">Mobile No</span>
-                    <input type="number" className={`input-style border ${inputErrors.mobileNumber ? 'border-red-500' : 'border-slate-300'}`} name="mobileNumber" onChange={handleChange} onBlur={handleBlur} value={data.mobileNumber} />
+                    <input type="number" className={`input-style border ${inputErrors.mobileNumber ? 'border-red-500' : 'border-slate-300'}`} name="mobileNumber" onChange={handleChange} value={data.mobileNumber} />
                     <p className="text-red-500 text-sm">{inputErrors.mobileNumber ? inputErrors.mobileNumber : ''}</p>
                 </label>
                 <label className="block relative  mt-3">
                     <span className="block text-sm font-medium text-slate-700">Password</span>
-                    <input type={togglePassword ? "text" : "password"} className={`input-style border ${inputErrors.password ? 'border-red-500' : 'border-slate-300'}`} name="password" onChange={handleChange} onBlur={handleBlur} value={data.password} />
+                    <input type={togglePassword ? "text" : "password"} className={`input-style border ${inputErrors.password ? 'border-red-500' : 'border-slate-300'}`} name="password" onChange={handleChange} value={data.password} />
                     <span className="absolute eyes-icons" onClick={() => setTogglePassword(!togglePassword)} > {togglePassword ? <IoEyeSharp /> : <FaEyeSlash />}</span>
                     <p className="text-red-500 text-sm">{inputErrors.password ? inputErrors.password : ''}</p>
                 </label>
